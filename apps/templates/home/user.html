@@ -1,0 +1,201 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} User Profile {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Edit Profile</h5>
+        </div>
+        <div class="card-body">
+          <form role="form" method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-4 pr-md-1">
+                <div class="form-group">
+                  <label>Username (disabled)</label>
+                  {{u_form.username}}
+                </div>
+              </div>
+              <div class="col-md-4 px-md-1">
+                <div class="form-group">
+                  <label>First Name</label>
+                  {{u_form.first_name}}
+                </div>
+                <span class="text-danger">{{ u_form.first_name.errors }}</span>
+              </div>
+              <div class="col-md-4 pl-md-1">
+                <div class="form-group">
+                  <label>Last Name</label>
+                  {{u_form.last_name}}
+                </div>
+                <span class="text-danger">{{ u_form.last_name.errors }}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 pr-md-1">
+                <label>Gender</label>
+                <div class="form-group">
+                  {% for radio in p_form.gender %}
+                  <div class="custom-control custom-radio custom-control-inline">
+                    {{ radio.tag }}
+                    <label class="custom-control-label" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                  </div>
+                  {% endfor %}
+                </div>
+                <span class="text-danger">{{ p_form.gender.errors }}</span>
+              </div>
+              <div class="col-md-4 px-md-1">
+                <div class="form-group">
+                  <label>Birth date</label>
+                  {{p_form.d_birth }}
+                </div>
+                <span class="text-danger">{{ p_form.d_birth.errors }}</span>
+              </div>
+              <div class="col-md-4 pl-md-1">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  {{u_form.email}}
+                </div>
+                <span class="text-danger">{{ u_form.email.errors }}</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 pr-md-1">
+                <div class="form-group">
+                  <label for="exampleInputFB">Facebook URL</label>
+                  {{p_form.fb_url}}
+                </div>
+                <span class="text-danger">{{ p_form.fb_url.errors }}</span>
+              </div>
+              <div class="col-md-4 px-md-1">
+                <div class="form-group">
+                  <label for="exampleInputTWITTER">Twitter URL</label>
+                  {{p_form.twitter_url}}
+                </div>
+                <span class="text-danger">{{ p_form.twitter_url.errors }}</span>
+              </div>
+              <div class="col-md-4 pl-md-1">
+                <div class="form-group">
+                  <label for="exampleInputLINKEDIN">Linkedin URL</label>
+                  {{p_form.linkedin_url}}
+                </div>
+                <span class="text-danger">{{ p_form.linkedin_url.errors }}</span>
+              </div>
+              <div class="custom-file" style="display: none;">
+                {{p_form.avatar}}
+                <label class="custom-file-label" for="customFile">Choose image file...</label>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-fill btn-primary">Save</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-user">
+        <div class="card-body">
+          <p class="card-text">
+          <div class="author">
+            <div class="block block-one"></div>
+            <div class="block block-two"></div>
+            <div class="block block-three"></div>
+            <div class="block block-four"></div>
+            <a href="javascript:void(0)">
+              <div class="button-container">
+                {% if encodedBinary != None %}
+                <img class="avatar" src="data:image/jpeg;base64,{{encodedBinary}}" alt="Avatar">
+                {% elif encodedBinary == None and p_form.gender.value == 'M'%}
+                <img class="avatar" src="{{ ASSETS_ROOT }}/img/anime3.png" alt="Avatar">
+                {% elif encodedBinary == None and p_form.gender.value == 'F'%}
+                <img class="avatar" src="{{ ASSETS_ROOT }}/img/anime6.png" alt="Avatar">
+                {% endif %}
+
+                <button id="button" class="btn btn-icon btn-round mt-5" title="Update your profile picture">
+                  <i class="tim-icons icon-camera-18"></i>
+                </button>
+                <button id="deleteButton" class="btn btn-icon btn-round mt-5" title="Remove your profile picture">
+                  <i class="tim-icons icon-trash-simple"></i>
+                </button>
+
+              </div>
+
+              <h5 class="title">{{u_form.first_name.value}} {{u_form.last_name.value}}</h5>
+            </a>
+            <p class="description">
+              Ceo/Co-Founder (houni lrole ywali)
+            </p>
+          </div>
+          </p>
+          <div class="card-description">
+            Do not be scared of the truth because we need to restart the human foundation in truth And I love you like
+            Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="button-container">
+            <button {% if p_form.fb_url %} onclick="window.open('{{p_form.fb_url.value}}','_blank')" {% else %}
+              href="javascript:void(0)" {% endif %} class="btn btn-icon btn-round btn-facebook">
+              <i class="fab fa-facebook"></i>
+            </button>
+            <button {% if p_form.twitter_url %} onclick="window.open('{{p_form.twitter_url.value}}','_blank')" {% else
+              %} href="javascript:void(0)" {% endif %} class="btn btn-icon btn-round btn-facebook">
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button {% if p_form.linkedin_url %} onclick="window.open('{{p_form.linkedin_url.value}}','_blank')" {% else
+              %} href="javascript:void(0)" {% endif %} class="btn btn-icon btn-round btn-facebook">
+              <i class="fab fa-linkedin"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  document.getElementById("button").addEventListener("click", function () {
+    document.getElementById("avatar").click();
+  });
+</script>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+
+  $(document).ready(function () {
+    $('#deleteButton').click(function () {
+      $.ajax({
+        url: "{% url 'delete-avatar' %}",
+        dataType: 'json',
+        success: function (data) {
+          if (data.success) {
+            location.reload()
+          } else {
+            console.log("error in delete avatar");
+          }
+        },
+        error: function () {
+          // Handle errors
+        }
+      });
+    });
+  });
+
+
+</script>
+{% endblock javascripts %}
